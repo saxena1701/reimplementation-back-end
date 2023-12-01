@@ -35,6 +35,8 @@ Rails.application.routes.draw do
           get '/:assignment_id/team_assignment', action: :team_assignment
           get '/:assignment_id/is_calibrated', action: :is_calibrated
           get '/:assignment_id/has_teams', action: :has_teams
+          get '/:assignment_id/staggered_and_no_topic', action: :staggered_and_no_topic
+          get '/:assignment_id/valid_num_review/:review_type', action: :valid_num_review
         end
       end
 
