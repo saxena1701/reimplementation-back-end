@@ -196,6 +196,10 @@ GEM
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
     rspec-support (3.12.1)
+    rswag (2.10.1)
+      rswag-api (= 2.10.1)
+      rswag-specs (= 2.10.1)
+      rswag-ui (= 2.10.1)
     rswag-api (2.10.1)
       railties (>= 3.1, < 7.1)
     rswag-specs (2.10.1)
@@ -257,9 +261,8 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.0.4, >= 7.0.4.2)
   rspec-rails
-  rswag-api
+  rswag
   rswag-specs
-  rswag-ui
   rubocop
   simplecov
   spring

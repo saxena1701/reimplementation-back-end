@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_05_193219) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_29_051018) do
   create_table "account_requests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "username"
     t.string "full_name"
@@ -99,8 +99,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_05_193219) do
     t.bigint "instructor_id", null: false
     t.bigint "course_id"
     t.boolean "enable_pair_programming"
-    t.boolean "has_topics"
     t.boolean "has_teams"
+    t.boolean "has_topics"
     t.index ["course_id"], name: "index_assignments_on_course_id"
     t.index ["instructor_id"], name: "index_assignments_on_instructor_id"
   end
