@@ -85,13 +85,14 @@ jobs:
       - name: Comment on PR if Tests Fail
         if: always() # Check if tests actually failed
         uses: thollander/actions-comment-pull-request@v2
-        message: |
-          🚨 **RSpec Tests Failed!**
-          ```
-          ${{ env.FAILED_TESTS }}
-          ```
-          Check the full logs for details.
-        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Ensure the correct token is used
+        with:
+          message: |
+            🚨 **RSpec Tests Failed!**
+            ```
+            ${{ env.FAILED_TESTS }}
+            ```
+            Check the full logs for details.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Format code coverage report
         run: ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.models.json" --debug
