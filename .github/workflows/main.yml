@@ -77,7 +77,7 @@ jobs:
       - name: Extract Failed Tests
         if: always()  # Ensures this step runs regardless of test outcome
         run: |
-          grep "FAILED" rspec_results.txt > failed_tests.txt || echo "No failed tests found." > failed_tests.txt
+          grep "FAILED" rspec_results.txt > failed_tests.txt || echo "All test passed." > failed_tests.txt
           echo "FAILED_TESTS<<EOF" >> $GITHUB_ENV
           cat failed_tests.txt >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -87,11 +87,10 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            🚨 **RSpec Tests Failed!**
+            🚨 **RSpec Tests Report!**
             ```
             ${{ env.FAILED_TESTS }}
             ```
-            Check the full logs for details.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Format code coverage report
