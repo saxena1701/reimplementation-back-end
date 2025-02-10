@@ -78,18 +78,20 @@ jobs:
         if: always()  # Ensures this step runs regardless of test outcome
         run: |
           grep "FAILED" rspec_results.txt > failed_tests.txt || echo "No failed tests found." > failed_tests.txt
+          echo "FAILED_TESTS<<EOF" >> $GITHUB_ENV
+          cat failed_tests.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Comment on PR if Tests Fail
         if: always() # Check if tests actually failed
         uses: thollander/actions-comment-pull-request@v2
-        with:
-          message: |
-            🚨 **RSpec Tests Failed!**
-            ```
-            $(cat failed_tests.txt)
-            ```
-            Check the full logs for details.
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Ensure the correct token is used
+        message: |
+          🚨 **RSpec Tests Failed!**
+          ```
+          ${{ env.FAILED_TESTS }}
+          ```
+          Check the full logs for details.
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Ensure the correct token is used
 
       - name: Format code coverage report
         run: ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.models.json" --debug
