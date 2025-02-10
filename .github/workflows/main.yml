@@ -80,7 +80,7 @@ jobs:
           grep "FAILED" rspec_results.txt > failed_tests.txt || echo "No failed tests found." > failed_tests.txt
 
       - name: Comment on PR if Tests Fail
-        if: contains(steps.run_tests.outcome, 'failure')  # Check if tests actually failed
+        if: always() # Check if tests actually failed
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
