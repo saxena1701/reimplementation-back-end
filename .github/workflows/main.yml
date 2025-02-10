@@ -75,12 +75,12 @@ jobs:
           bundle exec rspec spec/models --format documentation > rspec_results.txt || true
 
       - name: Extract Failed Tests
-        if: failure()
+        if: always()  # Ensures this step runs regardless of test outcome
         run: |
           grep "FAILED" rspec_results.txt > failed_tests.txt || echo "No failed tests found." > failed_tests.txt
 
       - name: Comment on PR if Tests Fail
-        if: failure()
+        if: contains(steps.run_tests.outcome, 'failure')  # Check if tests actually failed
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
@@ -89,7 +89,7 @@ jobs:
             $(cat failed_tests.txt)
             ```
             Check the full logs for details.
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Ensure the correct token is used
 
       - name: Format code coverage report
         run: ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.models.json" --debug
