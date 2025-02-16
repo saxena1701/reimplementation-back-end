@@ -44,7 +44,11 @@ group :development, :test do
   gem 'rswag-specs'
   gem 'rubocop'
   gem 'simplecov', require: false, group: :test
+  gem 'coveralls'
+  gem 'simplecov_json_formatter'
   gem 'database_cleaner-active_record'
+  gem 'danger'
+
 end
 
 group :development do
