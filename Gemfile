@@ -45,6 +45,7 @@ group :development, :test do
   gem 'rubocop'
   gem 'simplecov', require: false, group: :test
   gem 'database_cleaner-active_record'
+  gem 'danger'
 end
 
 group :development do
