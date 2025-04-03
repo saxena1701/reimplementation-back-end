@@ -84,7 +84,6 @@ jobs:
           ./cc-test-reporter sum-coverage coverage/codeclimate.*.json 
           ./cc-test-reporter after-build -t simplecov -r ${{ secrets.CC_TEST_REPORTER_ID }}
 
-
   docker:
     needs: test
     if: github.ref == 'refs/heads/main'
