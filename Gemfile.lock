@@ -282,7 +282,6 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   coveralls
-  database_cleaner-active_record
   debug
   factory_bot_rails
   faker
