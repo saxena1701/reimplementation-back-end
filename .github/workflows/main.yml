@@ -57,6 +57,7 @@ jobs:
       - name: Run tests
         run: bundle exec rspec spec/models
 
+
   docker:
     needs: test
     if: github.ref == 'refs/heads/main'
