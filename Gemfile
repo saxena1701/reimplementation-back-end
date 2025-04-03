@@ -46,7 +46,6 @@ group :development, :test do
   gem 'simplecov', require: false, group: :test
   gem 'coveralls'
   gem 'simplecov_json_formatter'
-  gem 'database_cleaner-active_record'
 end
 
 group :development do
