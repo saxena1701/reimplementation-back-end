@@ -24,9 +24,9 @@ jobs:
       - name: Read PR number and failed test report
         id: read_files
         run: |
-          PR_NUMBER=$(cat pr_number.txt)
+          PR_NUMBER=$(cat failed-tests/pr_number.txt)
           echo "pr=$PR_NUMBER" >> $GITHUB_OUTPUT
-          TEST_OUTPUT=$(cat failed_tests.txt)
+          TEST_OUTPUT=$(cat failed-tests/failed_tests.txt)
           echo "test_output<<EOF" >> $GITHUB_OUTPUT
           echo "$TEST_OUTPUT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -41,3 +41,4 @@ jobs:
             ${{ steps.read_files.outputs.test_output }}
             ```
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+
