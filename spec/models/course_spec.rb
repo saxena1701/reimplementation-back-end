@@ -12,7 +12,6 @@ describe Course, type: :model do
       course.name = ''
       expect(course).to be_valid
     end
-
     
     it 'validates presence of directory_path' do
       course.directory_path = ' '
