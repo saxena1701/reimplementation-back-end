@@ -15,23 +15,10 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/github-script@v3.1.0
+        uses: actions/download-artifact@v3
         with:
-          script: |
-            const artifacts = await github.actions.listWorkflowRunArtifacts({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: ${{github.event.workflow_run.id}},
-            });
-            const artifact = artifacts.data.artifacts.find((artifact) => artifact.name === 'pr');
-            const download = await github.actions.downloadArtifact({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              artifact_id: artifact.id,
-              archive_format: 'zip',
-            });
-            const fs = require('fs');
-            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+          name: pr
+          path: ${{ github.workspace }}/pr.zip
 
       - run: unzip pr.zip
 
