@@ -1,7 +1,7 @@
-name: PR Comment Workflow
+name: PR Test Workflow
 
 on:
-  pull_request_target:
+  pull_request:
     branches: [ main ]
     types: [ opened, synchronize, reopened ]
 
@@ -56,26 +56,38 @@ jobs:
         run: |
           bundle exec rspec spec/models --format documentation > rspec_results.txt || true
           bundle exec rspec spec/requests --format documentation >> rspec_results.txt || true
+      - name: Save PR number
+        run: echo "${{ github.event.pull_request.number }}" > pr_number.txt
       - name: Extract Failed Tests
         if: always()  # Ensures this step runs regardless of test outcome
         run: |
-          (
-          echo "Failing Model Test Cases:"
-          grep -E "^rspec ./spec/models/" rspec_results.txt
-          echo ""
-          echo "Failing Controller Test Cases:"
-          grep -E "^rspec ./spec/requests/" rspec_results.txt
-          ) > failed_tests.txt || echo "All tests passed." > failed_tests.txt
+          MODEL_FAILURES=$(grep -E "^rspec ./spec/models/" rspec_results.txt || true)
+          REQUEST_FAILURES=$(grep -E "^rspec ./spec/requests/" rspec_results.txt || true)
+          
+          if [ -z "$MODEL_FAILURES" ] && [ -z "$REQUEST_FAILURES" ]; then
+          echo "All tests passed." > failed_tests.txt
+          else
+          > failed_tests.txt  # Clear the file first
+            if [ -n "$MODEL_FAILURES" ]; then
+              echo "Failing Model Test Cases:" >> failed_tests.txt
+              echo "$MODEL_FAILURES" >> failed_tests.txt
+              echo "" >> failed_tests.txt
+            fi
+          
+            if [ -n "$REQUEST_FAILURES" ]; then
+              echo "Failing Controller Test Cases:" >> failed_tests.txt
+              echo "$REQUEST_FAILURES" >> failed_tests.txt
+              echo "" >> failed_tests.txt
+            fi
+          fi
+          
           echo "FAILED_TESTS<<EOF" >> $GITHUB_ENV
           cat failed_tests.txt >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-      - name: Comment on PR if Tests Fail
-        if: always() # Check if tests actually failed
-        uses: thollander/actions-comment-pull-request@v2
+
+      - uses: actions/upload-artifact@v4
         with:
-          message: |
-            🚨 **RSpec Tests Report!**
-            ```
-            ${{ env.FAILED_TESTS }}
-            ```
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          name: failed-tests
+          path: |
+            failed_tests.txt
+            pr_number.txt
