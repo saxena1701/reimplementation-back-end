@@ -14,11 +14,14 @@ jobs:
       github.event.workflow_run.conclusion == 'success'
 
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
+      - name: Download artifact from another workflow
+        uses: dawidd6/action-download-artifact@v2
         with:
-          name: pr
-          path: ${{ github.workspace }}/pr.zip
+          workflow: TestPR.yml   # Replace with the workflow file name that did the upload
+          workflow_conclusion: success
+          name: pr                                   # Must match artifact name used in the upload step
+          path: ${{ github.workspace }}/pr           # Folder where contents will be extracted
+          branch: main          
 
       - run: unzip pr.zip
 
