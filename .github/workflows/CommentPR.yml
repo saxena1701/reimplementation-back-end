@@ -32,13 +32,14 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Post RSpec summary
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
-          issue-number: ${{ steps.read_files.outputs.pr }}
+          pr-number: ${{ steps.read_files.outputs.pr }}  # This dynamically gets the PR number from the context
           message: |
             🚨 **RSpec Tests Report**
             ```
             ${{ steps.read_files.outputs.test_output }}
             ```
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+
 
