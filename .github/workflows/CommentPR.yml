@@ -19,9 +19,7 @@ jobs:
         with:
           workflow: TestPR.yml   # Replace with the workflow file name that did the upload
           workflow_conclusion: success
-          name: failed-tests                                  # Must match artifact name used in the upload step
-          path: .    # Folder where contents will be extracted
-          branch: main          
+               
 
       - name: Post RSpec summary
         uses: thollander/actions-comment-pull-request@v2
