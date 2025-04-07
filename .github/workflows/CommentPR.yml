@@ -21,12 +21,23 @@ jobs:
           workflow_conclusion: success
                
 
+      - name: Read PR number and failed test report
+        id: read_files
+        run: |
+          PR_NUMBER=$(cat pr_number.txt)
+          echo "pr=$PR_NUMBER" >> $GITHUB_OUTPUT
+          TEST_OUTPUT=$(cat failed_tests.txt)
+          echo "test_output<<EOF" >> $GITHUB_OUTPUT
+          echo "$TEST_OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Post RSpec summary
         uses: thollander/actions-comment-pull-request@v2
         with:
-         message: |
-          🚨 **RSpec Tests Report**
-          ```
-          $(cat ./failed_tests.txt)
-          ```
-         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          issue-number: ${{ steps.read_files.outputs.pr }}
+          message: |
+            🚨 **RSpec Tests Report**
+            ```
+            ${{ steps.read_files.outputs.test_output }}
+            ```
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
