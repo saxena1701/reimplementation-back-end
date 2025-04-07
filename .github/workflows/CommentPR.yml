@@ -19,27 +19,16 @@ jobs:
         with:
           workflow: TestPR.yml   # Replace with the workflow file name that did the upload
           workflow_conclusion: success
-          name: pr                                   # Must match artifact name used in the upload step
-          path: ${{ github.workspace }}/pr           # Folder where contents will be extracted
+          name: failed-tests                                  # Must match artifact name used in the upload step
+          path: .    # Folder where contents will be extracted
           branch: main          
 
-      - run: unzip pr.zip
-
-      - name: Comment on PR
-        uses: actions/github-script@v3
+      - name: Post RSpec summary
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          github-token: ${{ secrets.TOKEN_GITHUB }}
-          script: |
-            const fs = require('fs');
-            const issue_number = Number(fs.readFileSync('./NR'));
-            const failed_tests = process.env.FAILED_TESTS || 'No failed tests.';
-            await github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue_number,
-              body: `
-                🚨 **RSpec Test Report:**
-                
-                ${failed_tests}
-              `,
-            });
+         message: |
+          🚨 **RSpec Tests Report**
+          ```
+          $(cat ./failed_tests.txt)
+          ```
+         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
