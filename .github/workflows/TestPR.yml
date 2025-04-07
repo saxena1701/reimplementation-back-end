@@ -56,7 +56,8 @@ jobs:
         run: |
           bundle exec rspec spec/models --format documentation > rspec_results.txt || true
           bundle exec rspec spec/requests --format documentation >> rspec_results.txt || true
-      
+      - name: Save PR number
+        run: echo "${{ github.event.pull_request.number }}" > pr_number.txt
       - name: Extract Failed Tests
         if: always()  # Ensures this step runs regardless of test outcome
         run: |
@@ -87,4 +88,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: failed-tests
-          path: failed_tests.txt
+          path: |
+            failed_tests.txt
+            pr_number.txt
