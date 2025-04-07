@@ -92,3 +92,4 @@ jobs:
             ${{ env.FAILED_TESTS }}
             ```
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          pull_request_target: true 
