@@ -6,6 +6,7 @@ RSpec.describe 'api/v1/courses', type: :request do
     @roles = create_roles_hierarchy
   end
 
+  
   let(:prof) {
     User.create(
       name: "profa",
