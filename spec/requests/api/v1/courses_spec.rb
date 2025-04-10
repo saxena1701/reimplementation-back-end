@@ -308,7 +308,7 @@ RSpec.describe 'api/v1/courses', type: :request do
                       info: 'blank')
       }
       let(:id) { course.id }
-      response(204, 'successful') do
+      response(200, 'successful') do
         after do |example|
           example.metadata[:response][:content] = {
             'application/json' => {
