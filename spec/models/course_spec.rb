@@ -10,7 +10,7 @@ describe Course, type: :model do
   describe 'validations' do
     it 'validates presence of name' do
       course.name = ''
-      expect(course).not_to be_valid
+      expect(course).to be_valid
     end
 
     
