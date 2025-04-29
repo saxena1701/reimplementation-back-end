@@ -4,6 +4,8 @@ RSpec.describe Checkbox do
   let!(:checkbox) { Checkbox.new(id: 10, question_type: 'Checkbox', seq: 1.0, txt: 'test txt', weight: 11) }
   let!(:answer) { Answer.new(answer: 1) }
 
+
+  
   describe '#edit' do
     it 'returns the JSON' do
       json = checkbox.edit(0)
